@@ -13,13 +13,13 @@ import {DISCOVERY_PROTOCOL, MESSAGE_PROTOCOL} from "./constants.js";
 import {Liquid, liquid} from "../service.js";
 import {randomBytes} from "@libp2p/crypto"
 import {generateKeyPair, generateKeyPairFromSeed} from "@libp2p/crypto/keys";
-import {peerIdFromKeys} from "@libp2p/peer-id";
+import {peerIdFromPrivateKey} from "@libp2p/peer-id";
 import type {PubSub} from "@libp2p/interface";
 import { $seedBytes } from "./store.js";
 import {receiveMessagesFromPeers} from "@/lib/liquid.ts";
 
 
- let libp2p: Libp2p<{ liquid: Liquid; pubsub: PubSub<GossipsubEvents>; identify: Identify; }>
+ let libp2p: Libp2p<{ pubsub: PubSub<GossipsubEvents>; identify: Identify; }>
 export async function createBrowserNode(){
     if (libp2p) return libp2p
 
@@ -29,11 +29,11 @@ export async function createBrowserNode(){
         $seedBytes.set(Array.from(randomBytes(32)))
     }
     const key = await generateKeyPairFromSeed("Ed25519", new Uint8Array(seedBytes))
-    const peerId = await peerIdFromKeys(key.public.bytes, key.bytes)
+    const peerId = peerIdFromPrivateKey(key)
 
 
     libp2p = await createLibp2p({
-        peerId,
+        // peerId,
         addresses: {
             listen: [
                 // 👇 Listen for webRTC connection
@@ -41,17 +41,14 @@ export async function createBrowserNode(){
             ],
         },
         transports: [
-            webSockets({
-                // Allow all WebSocket connections inclusing without TLS
-                filter: filters.all,
-            }),
+            webSockets(),
             webRTC(),
             // // 👇 Required to create circuit relay reservations in order to hole punch browser-to-browser WebRTC connections
             circuitRelayTransport({
                 discoverRelays: 1,
             }),
         ],
-        connectionEncryption: [noise()],
+        connectionEncrypters: [noise()],
         streamMuxers: [yamux()],
         connectionGater: {
             // Allow private addresses for local testing
