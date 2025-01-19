@@ -1,6 +1,6 @@
 import {createLibp2p} from 'libp2p'
 import {autoNAT} from '@libp2p/autonat'
-import {identify} from '@libp2p/identify'
+import {identify, identifyPush} from '@libp2p/identify'
 import {noise} from '@chainsafe/libp2p-noise'
 import {yamux} from '@chainsafe/libp2p-yamux'
 import {gossipsub} from '@chainsafe/libp2p-gossipsub'
@@ -9,6 +9,8 @@ import {webSockets} from '@libp2p/websockets'
 import {tcp} from '@libp2p/tcp'
 import {circuitRelayServer} from '@libp2p/circuit-relay-v2'
 import {DISCOVERY_PROTOCOL, MESSAGE_PROTOCOL} from './src/constants.js'
+
+import { WebSocketsSecure } from '@multiformats/multiaddr-matcher'
 import {generateKeyPairFromSeed} from "@libp2p/crypto/keys";
 import {peerIdFromKeys} from "@libp2p/peer-id";
 import {liquid} from "./service.js";
@@ -28,7 +30,8 @@ const libp2p = await createLibp2p({
     peerId: peerId,
     addresses: {
         listen: [
-            `/ip4/0.0.0.0/tcp/${port}/ws`,
+            `/ip4/0.0.0.0/tcp/9001/ws`,
+            `/ip4/0.0.0.0/tcp/9002`,
         ],
         // announce: [
         //     `/ip4/${publicIp}/tcp/${port}/ws`,
@@ -45,17 +48,37 @@ const libp2p = await createLibp2p({
         denyDialMultiaddr: async () => false,
     },
     services: {
-        autoTLS: autoTLS(),
         liquid: liquid(),
+
         identify: identify(),
+        identifyPush: identifyPush(),
+
+        keychain: keychain(),
+
+        autoTLS: autoTLS(),
+        uPnPNAT: uPnPNAT(),
         autoNat: autoNAT(),
         relay: circuitRelayServer(),
         pubsub: gossipsub(),
-        keychain: keychain(),
-        upnp: uPnPNAT()
+
     },
 })
+libp2p.addEventListener('certificate:provision', () => {
+    console.info('A TLS certificate was provisioned')
 
+    const interval = setInterval(() => {
+        const mas = libp2p
+            .getMultiaddrs()
+            .filter(ma => WebSocketsSecure.exactMatch(ma) && ma.toString().includes('/sni/'))
+            .map(ma => ma.toString())
+
+        if (mas.length > 0) {
+            console.info('addresses:')
+            console.info(mas.join('\n'))
+            clearInterval(interval)
+        }
+    }, 1_000)
+})
 libp2p.services.pubsub.subscribe(DISCOVERY_PROTOCOL)
 libp2p.handle(MESSAGE_PROTOCOL, async (data)=>{
     const { stream, connection } = data
