@@ -17,16 +17,17 @@ import type {PeerId, PeerInfo} from "@libp2p/interface";
 
 export function usePeers(){
     const node = useNode()
-    const peers = useState<PeerInfo[]>([])
+    const [peers, setPeers] = useState<PeerInfo[]>([])
     useEffect(()=>{
         if(!node) return;
         function peerDiscovered(evt : CustomEvent<PeerInfo>){
             console.log('Discovered %s', evt.detail.id.toString())
-            // setDate(Date.now())
+            setPeers(prev => [...prev, evt.detail])
         }
         node.addEventListener('peer:discovery', peerDiscovered)
         function peerConnected(evt : CustomEvent<PeerId>){
             console.log('Connected %s', evt.detail.toString())
+            setPeers([])
         }
         node.addEventListener('peer:connect', peerConnected)
         return () => {

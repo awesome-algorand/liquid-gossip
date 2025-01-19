@@ -43,7 +43,7 @@ export const PeerCard = React.forwardRef<
            })
 
        return {addresses, relay: relayPeers[0]}
-   }, [node])
+   }, [node, peers])
      return (
          <Card className="w-full max-w-lg mx-auto p-4" ref={ref} {...props}>
              <CardHeader>
