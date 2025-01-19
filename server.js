@@ -4,6 +4,7 @@ import {identify} from '@libp2p/identify'
 import {noise} from '@chainsafe/libp2p-noise'
 import {yamux} from '@chainsafe/libp2p-yamux'
 import {gossipsub} from '@chainsafe/libp2p-gossipsub'
+import { autoTLS } from '@libp2p/auto-tls'
 import {webSockets} from '@libp2p/websockets'
 import {tcp} from '@libp2p/tcp'
 import {circuitRelayServer} from '@libp2p/circuit-relay-v2'
@@ -44,6 +45,7 @@ const libp2p = await createLibp2p({
         denyDialMultiaddr: async () => false,
     },
     services: {
+        autoTLS: autoTLS(),
         liquid: liquid(),
         identify: identify(),
         autoNat: autoNAT(),
