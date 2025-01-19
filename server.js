@@ -59,6 +59,7 @@ const libp2p = await createLibp2p({
         ],
         appendAnnounce: [
             `/ip4/${publicIp}/tcp/9001/ws`,
+            `/ip4/${publicIp}/tcp/9002`,
         ]
         // announce: [
         //     `/ip4/${publicIp}/tcp/${port}/ws`,
@@ -79,13 +80,8 @@ const libp2p = await createLibp2p({
         autoTLS: autoTLS(),
         identify: identify(),
         identifyPush: identifyPush(),
-
         keychain: keychain(),
-
-
-        uPnPNAT: uPnPNAT({
-            autoConfirmAddress: true
-        }),
+        uPnPNAT: uPnPNAT(),
         autoNat: autoNAT(),
         relay: circuitRelayServer(),
         pubsub: gossipsub(),

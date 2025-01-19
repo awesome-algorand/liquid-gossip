@@ -58,7 +58,6 @@ export async function createBrowserNode(){
             bootstrap({
                 list: [
                     '/ip4/184.169.220.207/tcp/9001/ws/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG',
-                    '/ip4/184.169.220.207/tcp/9003/wss/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG',
                     '/ip4/184.169.220.207/tcp/9002/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG'
                 ],
             }),
