@@ -11,9 +11,9 @@ import {circuitRelayServer} from '@libp2p/circuit-relay-v2'
 import {DISCOVERY_PROTOCOL, MESSAGE_PROTOCOL} from './src/constants.js'
 import {generateKeyPairFromSeed} from "@libp2p/crypto/keys";
 import {peerIdFromKeys} from "@libp2p/peer-id";
-import {liquid, messageHandler} from "./service.js";
-import {pubsubPeerDiscovery} from "@libp2p/pubsub-peer-discovery";
-import {pipe} from "it-pipe";
+import {liquid} from "./service.js";
+import {keychain} from "@libp2p/keychain";
+import {uPnPNAT} from "@libp2p/upnp-nat";
 
 // TODO: Import seed
 const kp = [32, 131, 177, 47, 115, 213, 166, 145, 111, 140, 36, 73, 144, 83, 221, 248, 183, 157, 57, 90, 240, 221, 74, 59, 216, 239, 246, 36, 162, 254, 163, 41]
@@ -30,10 +30,10 @@ const libp2p = await createLibp2p({
         listen: [
             `/ip4/0.0.0.0/tcp/${port}/ws`,
         ],
-        announce: [
-            `/ip4/${publicIp}/tcp/${port}/ws`,
-            // TODO: `/dnsaddr/${hostname}/tcp/443/ws`,
-        ],
+        // announce: [
+        //     `/ip4/${publicIp}/tcp/${port}/ws`,
+        //     // TODO: `/dnsaddr/${hostname}/tcp/443/ws`,
+        // ],
     },
     transports: [
         webSockets(),
@@ -51,26 +51,26 @@ const libp2p = await createLibp2p({
         autoNat: autoNAT(),
         relay: circuitRelayServer(),
         pubsub: gossipsub(),
+        keychain: keychain(),
+        upnp: uPnPNAT()
     },
 })
 
 libp2p.services.pubsub.subscribe(DISCOVERY_PROTOCOL)
 libp2p.handle(MESSAGE_PROTOCOL, async (data)=>{
-
     const { stream, connection } = data
-    pipe(stream, stream)
-    // const remotePeerId = connection.remotePeer.toString();
-    // console.log(`Received connection from: ${remotePeerId}`);
-    //
-    // // Read incoming data from the stream
-    // let string = ''
-    // const decoder = new TextDecoder()
-    // for await (const chunk of stream.source) {
-    //     string += decoder.decode(chunk.subarray())
-    //     console.log(`Message from ${remotePeerId}`);
-    // }
-    // // addMessage(string)
-    // console.log(string)
+    const remotePeerId = connection.remotePeer.toString();
+    console.log(`Received connection from: ${remotePeerId}`);
+
+    // Read incoming data from the stream
+    let string = ''
+    const decoder = new TextDecoder()
+    for await (const chunk of stream.source) {
+        string += decoder.decode(chunk.subarray())
+        console.log(`Message from ${remotePeerId}`);
+    }
+    // addMessage(string)
+    console.log(string)
 })
 
 console.log('ID: ', libp2p.peerId.toString())
