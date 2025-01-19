@@ -60,8 +60,7 @@ export async function createBrowserNode(){
         peerDiscovery: [
             bootstrap({
                 list: [
-                    '/dnsaddr/gossip.skeller.io/tcp/9001/ws/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG',
-                    '/dnsaddr/gossip.skeller.io/tcp/9002/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG',
+                    '/dnsaddr/gossip.skeller.io/tcp/9003/wss/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG'
                 ],
             }),
             pubsubPeerDiscovery({
