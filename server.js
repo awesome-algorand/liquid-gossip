@@ -33,10 +33,10 @@ const libp2p = await createLibp2p({
             `/ip4/0.0.0.0/tcp/9001/ws`,
             `/ip4/0.0.0.0/tcp/9002`,
         ],
-        // announce: [
-        //     `/ip4/${publicIp}/tcp/${port}/ws`,
-        //     // TODO: `/dnsaddr/${hostname}/tcp/443/ws`,
-        // ],
+        announce: [
+            `/ip4/${publicIp}/tcp/${port}/ws`,
+            // TODO: `/dnsaddr/${hostname}/tcp/443/ws`,
+        ],
     },
     transports: [
         webSockets(),
