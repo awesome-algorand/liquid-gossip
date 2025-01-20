@@ -1,5 +1,7 @@
 import {pipe} from "it-pipe";
 
+// TODO: Make a concrete libp2p Service for Liquid Auth/Algorand
+
 /**
  * Handle the Stream Data for the protocol
  * @param {import('@libp2p/interface').IncomingStreamData} data

@@ -6,7 +6,7 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {$messages, $lastConnection, $queryClient, addMessage, type Message} from "@/store.ts";
 import {useStore} from "@nanostores/react";
-import {BOOTSTRAP_ADDRESSES, MESSAGE_PROTOCOL} from "@/constants";
+import {MESSAGE_PROTOCOL} from "@/constants";
 import {multiaddr} from "@multiformats/multiaddr";
 import {QueryClientProvider} from "@tanstack/react-query";
 import {useNode} from "@/hooks/use-node.ts";

@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import {createBrowserNode} from "@/libp2p.ts";
-import {useEffect, useMemo, useState} from "react";
-import type {MultiaddrInput} from "@multiformats/multiaddr";
+import {useEffect, useState} from "react";
 import type {PeerId, PeerInfo} from "@libp2p/interface";
 
-
+// TODO: Use Peer connections like useDataStore in liquid
 // export function usePeer(addr: MultiaddrInput){
 //     const {data: node, isLoading, isError} = useNode()
 //     const query = useQuery({
@@ -15,6 +14,7 @@ import type {PeerId, PeerInfo} from "@libp2p/interface";
 //     return {...query, isError: query.isError || isError, isLoading: query.isLoading || isLoading}
 // }
 
+// TODO: Create proper hooks and context
 export function usePeers(){
     const node = useNode()
     const peers = useState<PeerInfo[]>([])
@@ -38,6 +38,7 @@ export function usePeers(){
     return peers
 }
 
+// TODO: Create a proper integration or find alternative
 export function useNode() {
     const query = useQuery({
         queryKey: ["node"],

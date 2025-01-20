@@ -9,7 +9,7 @@ import {yamux} from "@chainsafe/libp2p-yamux";
 import {bootstrap} from "@libp2p/bootstrap";
 import {gossipsub, type GossipsubEvents} from "@chainsafe/libp2p-gossipsub";
 import {identify, type Identify} from "@libp2p/identify";
-import {DISCOVERY_PROTOCOL, MESSAGE_PROTOCOL} from "./constants.js";
+import {BOOTSTRAP_ADDRESSES, DISCOVERY_PROTOCOL, MESSAGE_PROTOCOL} from "./constants.js";
 import {Liquid, liquid} from "../service.js";
 import {randomBytes} from "@libp2p/crypto"
 import {generateKeyPair, generateKeyPairFromSeed} from "@libp2p/crypto/keys";
@@ -59,11 +59,7 @@ export async function createBrowserNode(){
         },
         peerDiscovery: [
             bootstrap({
-                list: [
-                    '/ip4/127.0.0.1/tcp/9001/ws/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG'
-                    // '/ip4/184.169.220.207/tcp/9001/ws/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG',
-                    // '/ip4/184.169.220.207/tcp/9002/p2p/12D3KooWPmavaJXhPsi9JsWegWsPucNmJWNuxMmgRHjoHTAYQ4zG'
-                ],
+                list: BOOTSTRAP_ADDRESSES,
             }),
             pubsubPeerDiscovery({
                 interval: 2000,

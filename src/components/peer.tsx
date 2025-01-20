@@ -16,7 +16,15 @@ export const PeerCard = React.forwardRef<
     React.HTMLAttributes<HTMLDivElement>
 >((props, ref) =>{
    const node = useNode()
-    const peers = usePeers()
+   const [peers] = usePeers()
+   const [date, setDate] = useState(Date.now())
+   useEffect(() => {
+       const interval = setInterval(() => {
+           setDate(Date.now());
+       }, 3000);
+
+       return () => clearInterval(interval);
+   }, []);
    const {addresses, relay} = useMemo(()=>{
        if(!node) return {addresses: [], relay: "loading"}
        const relayPeers = node
@@ -43,7 +51,7 @@ export const PeerCard = React.forwardRef<
            })
 
        return {addresses, relay: relayPeers[0]}
-   }, [node])
+   }, [node, peers, date])
      return (
          <Card className="w-full max-w-lg mx-auto p-4" ref={ref} {...props}>
              <CardHeader>

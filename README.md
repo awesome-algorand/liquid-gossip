@@ -1,48 +1,100 @@
-# Astro Starter Kit: Basics
+# Liquid Gossip
 
-```sh
-npm create astro@latest -- --template basics
+Because I couldn't think of a better name, this is a fever dream
+of @PhearZero.
+
+## Why?
+
+Bandwidth comes at a cost, usually this is a positive correlation
+with revenue. More users === more better! Sometimes this is not the case,
+there is a common scenario where two parties want to exchange information
+without relying on a centralized path (Check out this crypto thing).
+
+We flip the paradigm from the server to the client:
+
+> We put the server on the client - Warren Buffering 2024
+
+### Scenarios
+
+#### Applied Cryptography
+
+Not my specialty but this is a primary use case.
+The value added in applied cryptography is the security
+of the information. A lot of times access is restricted
+and centralized brokers of key information is a non-starter.
+
+By offering a "Pure" p2p system, these primitives can be accessed
+over secure channels. Wallets can not only discover the NFTs
+in your account but also all of your integrated devices and 
+favourite services. For Algorand, think "Pera Discover" meets Zigbee
+
+#### Gamification/Limited Events
+
+No better way to prove you where somewhere or participate in
+a realtime activity than in person! Using a gossip discovery layer
+could allow for multi-party events where validator nodes
+would only connect to local instances.
+
+## Experimenting
+
+Clone this repo
+
+```bash
+git clone git@github.com:awesome-algorand/liquid-gossip.git
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+Change to the directory
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+cd liquid-gossip
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Install the dependencies
 
-## 🧞 Commands
+```bash
+npm install
+```
 
-All commands are run from the root of the project, from a terminal:
+Run a service node in a new terminal, 
+optionally update the [constants.js](./src/constants.js) `BOOTSTRAP_ADDRESSES` with the `Announced`
+to connect from other devices in the local network. 
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```bash
+PUBLIC_IP=<YOUR_NETOWRK_IP> node server.js
+```
 
-## 👀 Want to learn more?
+Open another terminal and run the frontend
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+> [!IMPORTANT]  
+> The browser is a full node with a unique Key/Pair stored in browser storage
+> You must open an incognito tab or use a different browser to connect P2P
+
+```bash
+npm run dev
+```
+
+A browser should open with the application, open an incognito tab or a different browser.
+
+
+Wait a minute for discovery and you should see peers in each window:
+
+![Gossip.png](public/Gossip.png)
+
+Click `Set` on the available nodes to change the chat window. 
+
+![Peers.png](public/Peers.png)
+
+Use  the `info` buttonto display more information about the proxy and local peer 
+
+![Info.png](public/Info.png)
+
+
+That's all for now!
+
+## TODO:
+
+- [] TLS
+  - [] Public Hosting
+- [] Pure private<->private
+
+![joe-exotic-tiger-king.gif](/public/joe-exotic-tiger-king.gif)

@@ -35,7 +35,7 @@ export async function receiveMessagesFromPeers(node :  Libp2p<{pubsub: PubSub<Go
     }
 }
 
-// Custom function to send a message to a specific peer
+// TODO: custom libp2p service
 async function sendMessage(stream: Stream, message: string) {
     try {
         const output = await pipe(
